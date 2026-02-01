@@ -10,9 +10,9 @@ export default defineConfig(({ command, mode }) => {
   return {
     plugins: [svelte()],
     base: base,
-    assetsInclude: ['**/*.JPG', '**/*.jpg', '**/*.JPEG', '**/*.jpeg'],
+    // assetsInclude: ['**/*.JPG', '**/*.jpg', '**/*.JPEG', '**/*.jpeg'],
     build: {
-      outDir: 'dist',
+      outDir: 'docs',
       assetsDir: 'assets',
       sourcemap: false
     }
