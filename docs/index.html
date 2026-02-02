@@ -5,8 +5,18 @@
     <link rel="icon" type="image/svg+xml" href="/assets/ER_browser_icon-9pO5Td7s.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quai de Gare</title>
-    <script type="module" crossorigin src="/assets/index-BN4wQVhB.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DCdJjlA8.css">
+    <script>
+      // Restore path from sessionStorage if redirected from 404
+      (function() {
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect !== location.pathname) {
+          history.replaceState(null, null, redirect);
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-CqUxJ99o.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CNVoL3Pr.css">
   </head>
   <body>
     <div id="app"></div>
