@@ -8,6 +8,11 @@
   let isScrolled = $state(false);
   let isNavVisible = $state(true);
   let lastScrollY = $state(0);
+  let touchStartX = $state(0);
+  let touchCurrentX = $state(0);
+  let isDragging = $state(false);
+  let menuOffset = $state(0);
+  let enableTransition = $state(true);
 
   $effect(() => {
     if (typeof window !== "undefined") {
@@ -53,14 +58,53 @@
 
   function toggleMenu() {
     isMenuOpen = !isMenuOpen;
+    enableTransition = true;
   }
 
   function closeMenu() {
     isMenuOpen = false;
+    menuOffset = 0;
+    enableTransition = true;
   }
 
   function handleNavigation() {
     closeMenu();
+  }
+
+  function handleTouchStart(event) {
+    touchStartX = event.touches[0].clientX;
+    isDragging = true;
+    enableTransition = false; // Disable transition during drag
+  }
+
+  function handleTouchMove(event) {
+    if (!isDragging) return;
+    
+    touchCurrentX = event.touches[0].clientX;
+    const deltaX = touchCurrentX - touchStartX;
+    
+    // Only allow swipe to the right (closing)
+    if (deltaX > 0) {
+      menuOffset = deltaX;
+    }
+  }
+
+  function handleTouchEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    enableTransition = true; // Re-enable transition for snap animation
+    
+    // Close menu if swiped more than 30% of screen width
+    if (menuOffset > window.innerWidth * 0.3) {
+      isMenuOpen = false;
+      // Wait for transition, then reset offset
+      setTimeout(() => {
+        menuOffset = 0;
+      }, 400);
+    } else {
+      // Snap back to open position
+      menuOffset = 0;
+    }
   }
 </script>
 
@@ -81,7 +125,16 @@
 </nav>
 
 <!-- Full-screen menu overlay -->
-<div class="menu-overlay" class:active={isMenuOpen}>
+<nav
+  class="menu-overlay" 
+  class:active={isMenuOpen}
+  class:no-transition={!enableTransition}
+  style="transform: translateX({menuOffset}px);"
+  ontouchstart={handleTouchStart}
+  ontouchmove={handleTouchMove}
+  ontouchend={handleTouchEnd}
+  aria-label="Mobile menu"
+>
   <button
     class="close-button"
     onclick={closeMenu}
@@ -110,7 +163,7 @@
       <ThemeToggle />
     </div>
   </nav>
-</div>
+</nav>
 
 <style>
   .navbar {
@@ -196,12 +249,17 @@
     -webkit-backdrop-filter: blur(20px) saturate(250%);
     border-left: 1px solid var(--nav-border);
     z-index: 100;
-    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
+    touch-action: pan-x;
   }
 
   .menu-overlay.active {
     right: +1px;
+  }
+
+  .menu-overlay.no-transition {
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0s;
   }
 
   .close-button {
