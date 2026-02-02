@@ -1,9 +1,39 @@
 <script>
   import { Router } from "@mateothegreat/svelte5-router";
   import Navigation from "./components/Navigation.svelte";
+  import NavigationMobile from "./components/NavigationMobile.svelte";
   import Home from "./routes/Home.svelte";
   import Research from "./routes/Research.svelte";
   import Projects from "./routes/Projects.svelte";
+
+  let isMobile = $state(false);
+
+  $effect(() => {
+    if (typeof window !== "undefined") {
+      const checkMobile = () => {
+        const isNarrow = window.innerWidth <= 768;
+        const orientation = window.screen?.orientation?.type;
+        
+        // Mobile if narrow width AND (portrait orientation OR no orientation API)
+        // This prevents false positives on split desktop windows
+        if (orientation) {
+          isMobile = isNarrow && orientation.includes('portrait');
+        } else {
+          // Fallback: if no orientation API, use width only
+          isMobile = isNarrow;
+        }
+      };
+
+      checkMobile();
+      window.addEventListener("resize", checkMobile);
+      window.screen?.orientation?.addEventListener("change", checkMobile);
+
+      return () => {
+        window.removeEventListener("resize", checkMobile);
+        window.screen?.orientation?.removeEventListener("change", checkMobile);
+      };
+    }
+  });
 
   const routes = [
     { path: "/", component: Home },
@@ -14,7 +44,11 @@
 </script>
 
 <main>
-  <Navigation />
+  {#if isMobile}
+    <NavigationMobile />
+  {:else}
+    <Navigation />
+  {/if}
 
   <div class="router-container">
     <Router {routes} />

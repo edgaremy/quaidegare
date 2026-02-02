@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from "svelte";
   import { theme } from "../stores/theme.js";
   import ERstrokes from "../assets/ER_strokes_only_animated.svg";
   import ERBlack from "../assets/ER_nostrokes.svg";
@@ -7,12 +8,16 @@
 
   let currentTheme = $state($theme);
   let isLoaded = $state(false);
+  let svgKey = $state(Date.now()); // Unique key to force SVG reload
 
   $effect(() => {
     currentTheme = $theme;
   });
 
-  $effect(() => {
+  onMount(() => {
+    // Force SVG animation restart by changing key on mount
+    svgKey = Date.now();
+    
     // Trigger animation after component mounts
     const timer = setTimeout(() => {
       isLoaded = true;
@@ -37,7 +42,8 @@
         style="width:89.5%;max-width:800px;position:absolute;top:0;left:3.8%;z-index:2;"
       >
         <img
-          src={ERstrokes}
+          key={svgKey}
+          src={`${ERstrokes}?v=${svgKey}`}
           alt="Animated Edgar Remy Logo"
           class="main-logo animated-svg"
         />
