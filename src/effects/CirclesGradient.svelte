@@ -2,39 +2,46 @@
     import { onMount } from "svelte";
 
     let noiseLayer;
+    let circle1;
+    let circle2;
+    let circle3;
 
     onMount(() => {
-        // Update CSS variables for mask positioning based on circle animations
+        // Cache circle elements
+        circle1 = document.querySelector(".circle-1");
+        circle2 = document.querySelector(".circle-2");
+        circle3 = document.querySelector(".circle-3");
+
+        let animationId;
+        
+        // Update mask positioning based on circle positions (viewport-relative)
         const updateMask = () => {
-            if (noiseLayer) {
-                const circle1 = document.querySelector(".circle-1");
-                const circle2 = document.querySelector(".circle-2");
-                const circle3 = document.querySelector(".circle-3");
+            if (noiseLayer && circle1 && circle2 && circle3) {
+                const rect1 = circle1.getBoundingClientRect();
+                const rect2 = circle2.getBoundingClientRect();
+                const rect3 = circle3.getBoundingClientRect();
 
-                if (circle1 && circle2 && circle3) {
-                    const rect1 = circle1.getBoundingClientRect();
-                    const rect2 = circle2.getBoundingClientRect();
-                    const rect3 = circle3.getBoundingClientRect();
-
-                    const wrapper = document
-                        .querySelector(".circles-gradient-wrapper")
-                        .getBoundingClientRect();
-
-                    noiseLayer.style.maskImage = `
-                        radial-gradient(circle at ${rect1.left + rect1.width / 2 - wrapper.left}px ${rect1.top + rect1.height / 2 - wrapper.top}px, black ${rect1.width * 0.3}px, transparent ${rect1.width * 0.5}px),
-                        radial-gradient(circle at ${rect2.left + rect2.width / 2 - wrapper.left}px ${rect2.top + rect2.height / 2 - wrapper.top}px, black ${rect2.width * 0.3}px, transparent ${rect2.width * 0.5}px),
-                        radial-gradient(circle at ${rect3.left + rect3.width / 2 - wrapper.left}px ${rect3.top + rect3.height / 2 - wrapper.top}px, black ${rect3.width * 0.3}px, transparent ${rect3.width * 0.5}px)
-                    `;
-                    noiseLayer.style.webkitMaskImage =
-                        noiseLayer.style.maskImage;
-                    noiseLayer.style.maskComposite = "add";
-                    noiseLayer.style.webkitMaskComposite = "source-over";
-                }
+                // Use viewport coordinates directly since noise layer is position:fixed
+                noiseLayer.style.maskImage = `
+                    radial-gradient(circle at ${rect1.left + rect1.width / 2}px ${rect1.top + rect1.height / 2}px, black ${rect1.width * 0.3}px, transparent ${rect1.width * 0.5}px),
+                    radial-gradient(circle at ${rect2.left + rect2.width / 2}px ${rect2.top + rect2.height / 2}px, black ${rect2.width * 0.3}px, transparent ${rect2.width * 0.5}px),
+                    radial-gradient(circle at ${rect3.left + rect3.width / 2}px ${rect3.top + rect3.height / 2}px, black ${rect3.width * 0.3}px, transparent ${rect3.width * 0.5}px)
+                `;
+                noiseLayer.style.webkitMaskImage = noiseLayer.style.maskImage;
+                noiseLayer.style.maskComposite = "add";
+                noiseLayer.style.webkitMaskComposite = "source-over";
             }
-            requestAnimationFrame(updateMask);
+            animationId = requestAnimationFrame(updateMask);
         };
 
-        updateMask();
+        animationId = requestAnimationFrame(updateMask);
+
+        // Cleanup on unmount
+        return () => {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        };
     });
 </script>
 
@@ -218,7 +225,7 @@
         background-size: 100px 100px;
         background-repeat: repeat;
         mix-blend-mode: hard-light;
-        opacity: 0.75;
+        opacity: 0.6;
     }
 
     .circle-1,
