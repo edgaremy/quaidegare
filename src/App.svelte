@@ -14,10 +14,10 @@
         const isNarrow = window.innerWidth <= 768;
         const orientation = window.screen?.orientation?.type;
         
-        // Mobile if narrow width AND (portrait orientation OR no orientation API)
+        // Mobile if narrow width OR (portrait orientation OR no orientation API)
         // This prevents false positives on split desktop windows
         if (orientation) {
-          isMobile = isNarrow && orientation.includes('portrait');
+          isMobile = isNarrow || orientation.includes('portrait');
         } else {
           // Fallback: if no orientation API, use width only
           isMobile = isNarrow;
