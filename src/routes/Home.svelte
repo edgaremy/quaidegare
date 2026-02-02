@@ -17,7 +17,7 @@
   onMount(() => {
     // Force SVG animation restart by changing key on mount
     svgKey = Date.now();
-    
+
     // Trigger animation after component mounts
     const timer = setTimeout(() => {
       isLoaded = true;
@@ -52,11 +52,7 @@
         class="logo-wrapper static-logo"
         style="position:relative;z-index:1;"
       >
-        <img
-          src={ERBlack}
-          alt="Edgar Remy Logo"
-          class="main-logo"
-        />
+        <img src={ERBlack} alt="Edgar Remy Logo" class="main-logo" />
       </div>
     </div>
     <h1 class="name" class:visible={isLoaded}>Edgar Remy</h1>
@@ -140,6 +136,45 @@
     z-index: 1;
   }
 
+  /* Glow effect container for dark theme */
+  :global([data-theme="dark"]) .static-logo::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/ER_nostrokes.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: invert(100%) sepia(20%) saturate(1620%) hue-rotate(293deg)
+      brightness(101%) contrast(109%) blur(5px) brightness(1.5);
+    opacity: 0;
+    z-index: -1;
+    pointer-events: none;
+    animation:
+      glow-fade-in 1.5s ease-out 2s forwards,
+      glow-pulse 2.5s ease-in-out 3.5s infinite;
+  }
+
+  :global([data-theme="dark"]) .animated-logo::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/ER_strokes_only_animated.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: invert(100%) sepia(20%) saturate(1620%) hue-rotate(293deg)
+      brightness(101%) contrast(109%) blur(6px) brightness(300%);
+    opacity: 0;
+    z-index: -1;
+    pointer-events: none;
+    animation:
+      glow-fade-in 1.5s ease-out 2s forwards,
+      glow-pulse 2.5s ease-in-out 3.5s infinite;
+  }
+
   .main-logo {
     width: 100%;
     max-width: 800px;
@@ -181,9 +216,54 @@
     color: var(--text-primary);
   }
 
+  :global([data-theme="dark"]) .name.visible {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0);
+    animation:
+      text-glow-fade-in 1.5s ease-out 1.5s forwards,
+      text-glow-pulse 2.5s ease-in-out 3s infinite;
+  }
+
   .name.visible {
     opacity: 1;
     max-height: 150px;
+  }
+
+  @keyframes glow-fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0.65;
+    }
+  }
+
+  @keyframes glow-pulse {
+    0%,
+    100% {
+      opacity: 0.65;
+    }
+    50% {
+      opacity: 0.25;
+    }
+  }
+
+  @keyframes text-glow-fade-in {
+    0% {
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0);
+    }
+    100% {
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.55);
+    }
+  }
+
+  @keyframes text-glow-pulse {
+    0%,
+    100% {
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.55);
+    }
+    50% {
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+    }
   }
 
   @media (max-width: 768px) {
