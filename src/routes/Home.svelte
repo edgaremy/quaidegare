@@ -151,9 +151,7 @@
     opacity: 0;
     z-index: -1;
     pointer-events: none;
-    animation:
-      glow-fade-in 1.5s ease-out 2s forwards,
-      glow-pulse 3s ease-in-out 3.5s infinite;
+    animation: glow-fade-in 1.5s ease-out 2s forwards;
   }
 
   :global([data-theme="dark"]) .animated-logo::before {
@@ -170,9 +168,7 @@
     opacity: 0;
     z-index: -1;
     pointer-events: none;
-    animation:
-      glow-fade-in 1.5s ease-out 2s forwards,
-      glow-pulse 3s ease-in-out 3.5s infinite;
+    animation: glow-anim-fade-in 1.5s ease-out 2s forwards;
   }
 
   .main-logo {
@@ -218,9 +214,7 @@
 
   :global([data-theme="dark"]) .name.visible {
     text-shadow: 0 0 20px rgba(255, 255, 255, 0);
-    animation:
-      text-glow-fade-in 1.5s ease-out 1.5s forwards,
-      text-glow-pulse 3s ease-in-out 3s infinite;
+    animation: text-glow-fade-in 1.5s ease-out 1.5s forwards;
   }
 
   .name.visible {
@@ -233,17 +227,16 @@
       opacity: 0;
     }
     100% {
-      opacity: 0.65;
+      opacity: 0.5;
     }
   }
 
-  @keyframes glow-pulse {
-    0%,
-    100% {
-      opacity: 0.65;
+  @keyframes glow-anim-fade-in {
+    0% {
+      opacity: 0;
     }
-    50% {
-      opacity: 0.25;
+    100% {
+      opacity: 0.75;
     }
   }
 
@@ -253,16 +246,6 @@
     }
     100% {
       text-shadow: 0 0 10px rgba(255, 255, 255, 0.55);
-    }
-  }
-
-  @keyframes text-glow-pulse {
-    0%,
-    100% {
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.55);
-    }
-    50% {
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
     }
   }
 
