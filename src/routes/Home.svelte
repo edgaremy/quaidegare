@@ -153,7 +153,7 @@
     pointer-events: none;
     animation:
       glow-fade-in 1.5s ease-out 2s forwards,
-      glow-pulse 2.5s ease-in-out 3.5s infinite;
+      glow-pulse 3s ease-in-out 3.5s infinite;
   }
 
   :global([data-theme="dark"]) .animated-logo::before {
@@ -172,7 +172,7 @@
     pointer-events: none;
     animation:
       glow-fade-in 1.5s ease-out 2s forwards,
-      glow-pulse 2.5s ease-in-out 3.5s infinite;
+      glow-pulse 3s ease-in-out 3.5s infinite;
   }
 
   .main-logo {
@@ -220,7 +220,7 @@
     text-shadow: 0 0 20px rgba(255, 255, 255, 0);
     animation:
       text-glow-fade-in 1.5s ease-out 1.5s forwards,
-      text-glow-pulse 2.5s ease-in-out 3s infinite;
+      text-glow-pulse 3s ease-in-out 3s infinite;
   }
 
   .name.visible {
