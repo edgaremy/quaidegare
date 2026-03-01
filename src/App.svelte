@@ -4,7 +4,7 @@
   import NavigationMobile from "./components/NavigationMobile.svelte";
   import Home from "./routes/Home.svelte";
   import Research from "./routes/Research.svelte";
-  import Projects from "./routes/Projects.svelte";
+  import { allProjects } from "./projects/registry.js";
 
   let isMobile = $state(false);
 
@@ -35,11 +35,16 @@
     }
   });
 
+  // Base routes — /projects renders Home (with scroll-to-projects on mount)
   const routes = [
     { path: "/", component: Home },
+    { path: "/projects", component: Home },
     { path: "/research", component: Research },
-    { path: "/projects", component: Projects },
     { path: "/contact", component: Home },
+    // Dynamically registered project pages
+    ...allProjects
+      .filter((p) => p.component)
+      .map((p) => ({ path: `/${p.slug}`, component: p.component })),
   ];
 </script>
 

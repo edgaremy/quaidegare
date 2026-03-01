@@ -4,8 +4,9 @@
 
   function handleClick(event) {
     event.preventDefault();
-    if (onClick) onClick(event);
-    goto(href);
+    // If onClick returns true the navigation is fully handled by the caller
+    const handled = onClick ? onClick(event) : false;
+    if (!handled) goto(href);
   }
 </script>
 
@@ -28,12 +29,14 @@
     border-radius: 6px;
     cursor: pointer;
     transition:
-      color 0.5s ease,
+      color 0.4s ease,
       transform 0.1s;
   }
   .nav-btn:hover {
     color: var(--accent-primary);
     background: var(--accent-hover);
+    /* font-weight: 600;
+    letter-spacing: -0.012em; */
   }
   .nav-btn:active {
     transform: scaleY(0.9) scaleX(1.1);

@@ -1,5 +1,5 @@
 <script>
-  import { route } from "@mateothegreat/svelte5-router";
+  import { route, goto } from "@mateothegreat/svelte5-router";
   import { Menu, X } from "@lucide/svelte";
   import ThemeToggle from "./ThemeToggle.svelte";
   import ERBlack from "../assets/ER_black_small.svg";
@@ -69,6 +69,34 @@
 
   function handleNavigation() {
     closeMenu();
+  }
+
+  /** True when the home/projects page is already mounted (checks DOM, not URL). */
+  function isOnHomePage() {
+    return typeof document !== "undefined" && !!document.getElementById("projects");
+  }
+
+  function handleHomeClick(event) {
+    event.preventDefault();
+    closeMenu();
+    if (isOnHomePage()) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      // Let IntersectionObserver restore the URL naturally
+    } else {
+      goto("/");
+    }
+  }
+
+  function handleProjectsClick(event) {
+    event.preventDefault();
+    closeMenu();
+    if (isOnHomePage()) {
+      const section = document.getElementById("projects");
+      section?.scrollIntoView({ behavior: "smooth" });
+      history.replaceState(null, "", "/projects");
+    } else {
+      goto("/projects");
+    }
   }
 
   function handleTouchStart(event) {
@@ -146,10 +174,10 @@
   <nav class="menu-content">
     <ul class="menu-list">
       <li>
-        <a href="/" use:route onclick={handleNavigation}>Home</a>
+        <button onclick={handleHomeClick} type="button">Home</button>
       </li>
       <li>
-        <a href="/projects" use:route onclick={handleNavigation}>Projects</a>
+        <button onclick={handleProjectsClick} type="button">Projects</button>
       </li>
       <li>
         <a href="/research" use:route onclick={handleNavigation}>Research</a>
@@ -312,6 +340,25 @@
   }
 
   .menu-list a:hover {
+    opacity: 0.7;
+  }
+
+  /* Mobile nav buttons (Home, Projects) share the same style as <a> links */
+  .menu-list button {
+    font-family: "Young Serif", serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    letter-spacing: -0.03em;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .menu-list button:hover {
     opacity: 0.7;
   }
 

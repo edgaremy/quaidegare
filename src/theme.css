@@ -41,6 +41,11 @@
   /* Footer */
   --footer-border: #eeeeee;
   --footer-text: #666666;
+
+  /* Cards / Project tiles */
+  --card-bg: rgba(232, 214, 182, 0.19);
+  --card-bg-hover: rgba(36, 20, 15, 0.09);
+  --card-border: rgba(90, 63, 9, 0.213);
 }
 
 /* Dark theme */
@@ -83,6 +88,11 @@
 
   /* Footer */
   --footer-text: #aaaaaa;
+
+  /* Cards / Project tiles */
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-bg-hover: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.12);
 }
 
 /* Apply theme colors to html and body */

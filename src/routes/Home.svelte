@@ -5,24 +5,77 @@
   import ERBlack from "../assets/ER_nostrokes.svg";
   import CirclesGradient from "../effects/CirclesGradient.svelte";
   import RaysGradient from "../effects/RaysGradient.svelte";
+  import ProjectTile from "../components/ProjectTile.svelte";
+  import { getProjectsByYear } from "../projects/registry.js";
+
+  const projectsByYear = getProjectsByYear();
 
   let currentTheme = $state($theme);
   let isLoaded = $state(false);
-  let svgKey = $state(Date.now()); // Unique key to force SVG reload
+  // Changing svgKey forces the <img> to reload the SVG file and restart its animation.
+  let svgKey = $state(0);
 
   $effect(() => {
     currentTheme = $theme;
   });
 
   onMount(() => {
-    // Force SVG animation restart by changing key on mount
-    svgKey = Date.now();
+    // ── URL sync: grab the pre-patch native replaceState ──────────────────
+    // The router monkey-patches history.replaceState and fires a "replaceState"
+    // event on every call, which would cause a full re-render of the same route.
+    // We stored the native method in main.js (before mount) to bypass this.
+    // Because of this, scrolling between / and /projects never triggers a remount,
+    // so onMount only runs on genuine navigations — it is safe to always animate.
+    const rawReplaceState = window._nativeReplaceState ?? history.replaceState.bind(history);
 
-    // Trigger animation after component mounts
-    const timer = setTimeout(() => {
+    // ── SVG animation — always play on every real mount ───────────────────
+    svgKey = Date.now(); // unique key restarts the animated SVG
+    const animTimer = setTimeout(() => {
       isLoaded = true;
     }, 200);
-    return () => clearTimeout(timer);
+
+    // ── Scroll to projects section if this mount was triggered by /projects ─
+    const projectsSection = document.getElementById("projects");
+    if (
+      projectsSection &&
+      (window.location.pathname === "/projects" ||
+        window.location.hash === "#projects")
+    ) {
+      requestAnimationFrame(() => {
+        projectsSection.scrollIntoView({ behavior: "smooth" });
+      });
+    }
+
+    // ── URL ↔ scroll sync ─────────────────────────────────────────────────
+    // threshold: 0 fires the observer as soon as ANY pixel of the section
+    // enters or leaves the viewport — reliable even on slow scrolling.
+    // We use boundingClientRect.top to distinguish:
+    //   - section NOT intersecting + top > 0  → section is BELOW viewport → show "/"
+    //   - section NOT intersecting + top < 0  → section scrolled ABOVE   → still "/projects"
+    let observer;
+    if (projectsSection && "IntersectionObserver" in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              rawReplaceState(null, "", "/projects");
+            } else if (entry.boundingClientRect.top > 0) {
+              // Projects section is below the viewport — we are on the hero
+              rawReplaceState(null, "", "/");
+            }
+            // If top < 0 and not intersecting we are deep inside/past the
+            // section — keep the URL as /projects (do nothing).
+          });
+        },
+        { threshold: 0 }
+      );
+      observer.observe(projectsSection);
+    }
+
+    return () => {
+      clearTimeout(animTimer);
+      observer?.disconnect();
+    };
   });
 </script>
 
@@ -58,6 +111,28 @@
     <h1 class="name" class:visible={isLoaded}>Edgar Remy</h1>
   </div>
 </div>
+
+<!-- ─── Projects section ───────────────────────────────────────────────────── -->
+<section id="projects" class="projects-section">
+  <h2 class="projects-heading">Projects</h2>
+
+  {#each projectsByYear as { year, projects }}
+    <div class="year-group">
+      <h3 class="year-label">{year}</h3>
+      <div class="projects-grid">
+        {#each projects as project (project.slug)}
+          <ProjectTile
+            title={project.title}
+            subtitle={project.subtitle}
+            icon={project.icon}
+            iconComponent={project.iconComponent}
+            slug={project.slug}
+          />
+        {/each}
+      </div>
+    </div>
+  {/each}
+</section>
 
 <style>
   .background-gradient {
@@ -268,6 +343,51 @@
     .name {
       font-size: 2.5rem;
       width: 250px;
+    }
+  }
+
+  /* ─── Projects section ──────────────────────────────────────────────────── */
+  .projects-section {
+    position: relative;
+    z-index: 10;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+
+  .projects-heading {
+    font-family: "Young Serif", serif;
+    font-size: 2.8rem;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    color: var(--text-primary);
+    margin-bottom: 2.5rem;
+    text-align: left;
+  }
+
+  .year-group {
+    margin-bottom: 2.5rem;
+  }
+
+  .year-label {
+    font-size: 1.7rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--text-secondary, #888);
+    margin-bottom: 1rem;
+    text-align: left;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

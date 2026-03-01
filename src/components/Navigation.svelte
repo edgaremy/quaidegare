@@ -34,6 +34,35 @@
   function closeMenu() {
     isMenuOpen = false;
   }
+
+  /** True when the home/projects page is already rendered (checks DOM, not URL). */
+  function isOnHomePage() {
+    return typeof document !== "undefined" && !!document.getElementById("projects");
+  }
+
+  /** "Home" nav button handler — scroll up if already on home page. */
+  function handleHomeClick() {
+    closeMenu();
+    if (isOnHomePage()) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      // Let the IntersectionObserver update the URL naturally as the page scrolls up
+      return true; // handled — skip goto
+    }
+    return false; // let goto('/') run
+  }
+
+  /** "Projects" nav button handler — scroll to #projects if already on home page. */
+  function handleProjectsClick() {
+    closeMenu();
+    if (isOnHomePage()) {
+      const section = document.getElementById("projects");
+      section?.scrollIntoView({ behavior: "smooth" });
+      history.replaceState(null, "", "/projects");
+      return true; // handled
+    }
+    // On a different page: navigate to home; Home.svelte will auto-scroll on mount
+    return false; // let goto('/projects') run
+  }
 </script>
 
 <nav class="navbar" class:scrolled={isScrolled}>
@@ -53,13 +82,13 @@
 
     <ul class="nav-menu" class:active={isMenuOpen}>
       <li>
-        <NavigationButton href="/" label="Home" onClick={closeMenu} />
+        <NavigationButton href="/" label="Home" onClick={handleHomeClick} />
       </li>
       <li>
         <NavigationButton
           href="/projects"
           label="Projects"
-          onClick={closeMenu}
+          onClick={handleProjectsClick}
         />
       </li>
       <li>
