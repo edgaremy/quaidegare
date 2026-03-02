@@ -42,6 +42,7 @@
   class="themed-icon"
   style="--light-filter: {lightFilter}; --dark-filter: {darkFilter};"
   class:dark={currentTheme === "dark"}
+  draggable="false"
 />
 
 <style>
@@ -52,6 +53,9 @@
     display: block;
     filter: var(--light-filter);
     /* No transition: filter — see comment in component docs */
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
   }
 
   .themed-icon.dark {

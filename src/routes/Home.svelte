@@ -127,6 +127,10 @@
             icon={project.icon}
             iconComponent={project.iconComponent}
             slug={project.slug}
+            hoverBgLight={project.hoverBgLight}
+            hoverBgDark={project.hoverBgDark}
+            hoverTextLight={project.hoverTextLight}
+            hoverTextDark={project.hoverTextDark}
           />
         {/each}
       </div>
@@ -380,14 +384,19 @@
   }
 
   .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
     gap: 1rem;
   }
 
   @media (max-width: 480px) {
     .projects-grid {
-      grid-template-columns: 1fr;
+      flex-direction: column;
+    }
+    /* On mobile each tile spans the full column */
+    .projects-grid > :global(*) {
+      width: 100%;
     }
   }
 </style>

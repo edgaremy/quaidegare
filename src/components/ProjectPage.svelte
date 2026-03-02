@@ -76,7 +76,7 @@
       {:else if icon}
         <div class="project-icon" aria-hidden="true">
           {#if icon.startsWith("/")}
-            <img src={icon} alt="" class="project-icon-img" />
+            <img src={icon} alt="" class="project-icon-img" draggable="false" />
           {:else}
             {icon}
           {/if}
@@ -173,6 +173,8 @@
     line-height: 1;
     flex-shrink: 0;
     user-select: none;
+    pointer-events: none;
+    -webkit-user-drag: none;
   }
 
   .project-icon-img {
@@ -180,11 +182,16 @@
     height: 12rem;
     object-fit: contain;
     display: block;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
   }
 
   .project-icon-component {
     width: 12rem;
     height: 12rem;
+    pointer-events: none;
+    user-select: none;
   }
 
   .header-text {

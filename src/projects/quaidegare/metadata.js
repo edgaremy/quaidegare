@@ -10,4 +10,9 @@ export const metadata = {
   iconComponent: ERIcon,
   url: "https://www.quaidegare.fr",
   displayUrl: "quaidegare.fr",
+  // Hover colours — indigo, matching the site accent
+  hoverBgLight: "#f0eefd",
+  hoverBgDark: "#1e1b4b",
+  hoverTextLight: "#3730a3",
+  hoverTextDark: "#a5b4fc",
 };
