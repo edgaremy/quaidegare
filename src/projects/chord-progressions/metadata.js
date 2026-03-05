@@ -9,9 +9,8 @@ export const metadata = {
   icon: collabstLogo,
   url: "https://chords.quaidegare.fr/",
   displayUrl: "chords.quaidegare.fr",
-  // Hover colours — warm amber, jazz feel
-  hoverBgLight: "#fff4e6",
-  hoverBgDark: "#2e2010",
-  hoverTextLight: "#8b5a00",
-  hoverTextDark: "#f9b94e",
+  hoverBgLight: "#caffe8",
+  hoverBgDark: "#002d1c",
+  hoverTextLight: "#0d6b52",
+  hoverTextDark: "#68ffbe",
 };
