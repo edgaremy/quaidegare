@@ -11,7 +11,7 @@ export const metadata = {
   url: "https://github.com/edgaremy/neural-netz",
   displayUrl: "git/neural-netz",
   hoverBgLight: "#e6f9ff",
-  hoverBgDark: "#001b2b",
-  hoverTextLight: "#0d007f",
+  hoverBgDark: "#001927",
+  hoverTextLight: "#0b0072",
   hoverTextDark: "#83b5ff",
 };

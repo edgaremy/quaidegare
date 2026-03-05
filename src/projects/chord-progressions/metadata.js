@@ -11,6 +11,6 @@ export const metadata = {
   displayUrl: "chords.quaidegare.fr",
   hoverBgLight: "#caffe8",
   hoverBgDark: "#002d1c",
-  hoverTextLight: "#0d6b52",
+  hoverTextLight: "#066249",
   hoverTextDark: "#68ffbe",
 };

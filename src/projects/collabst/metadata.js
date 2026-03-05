@@ -11,6 +11,6 @@ export const metadata = {
   displayUrl: "git/collabst",
   hoverBgLight: "#cceff7",
   hoverBgDark: "#00272f",
-  hoverTextLight: "#056a86",
+  hoverTextLight: "#005f79",
   hoverTextDark: "#88e9ff",
 };

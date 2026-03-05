@@ -59,7 +59,12 @@
 
 <article class="project-page">
   <!-- ─── Back button ──────────────────────────────────────────────────────── -->
-  <button class="back-btn" onclick={goBack} type="button" aria-label="Back to projects">
+  <button
+    class="back-btn"
+    onclick={goBack}
+    type="button"
+    aria-label="Back to projects"
+  >
     <ArrowLeft size={18} strokeWidth={2} />
     <span>Projects</span>
   </button>
@@ -68,7 +73,9 @@
   <header class="project-header">
     <div class="header-row">
       {#if iconSnippet}
-        <div class="project-icon" aria-hidden="true">{@render iconSnippet()}</div>
+        <div class="project-icon" aria-hidden="true">
+          {@render iconSnippet()}
+        </div>
       {:else if IconComponent}
         <div class="project-icon project-icon-component" aria-hidden="true">
           <IconComponent />
@@ -84,24 +91,34 @@
       {/if}
       <div class="header-text">
         <h1 class="project-title">{title}</h1>
+        <!-- date – url on one line, always inside the grid cell -->
+        {#if date || url}
+          <div class="meta-row">
+            {#if date}
+              <time class="project-date" datetime={date}>{formatDate(date)}</time>
+            {/if}
+            {#if date && url}<span class="meta-sep">&nbsp;&ndash;&nbsp;</span>{/if}
+            {#if url}
+              {@const isExternal =
+                url.startsWith("http://") || url.startsWith("https://")}
+              <a
+                class="project-url"
+                href={url}
+                target={isExternal ? "_blank" : null}
+                rel={isExternal ? "noopener noreferrer" : null}>{displayUrl || url}</a
+              >
+            {/if}
+          </div>
+        {/if}
         {#if subtitle}
-          <p class="project-subtitle">{subtitle}</p>
+          <p class="project-subtitle subtitle-in-row">{subtitle}</p>
         {/if}
       </div>
     </div>
 
-    {#if url}
-      {@const isExternal = url.startsWith("http://") || url.startsWith("https://")}
-      <a
-        class="project-url"
-        href={url}
-        target={isExternal ? "_blank" : null}
-        rel={isExternal ? "noopener noreferrer" : null}
-      >{displayUrl || url}</a>
-    {/if}
-
-    {#if date}
-      <time class="project-date" datetime={date}>{formatDate(date)}</time>
+    <!-- Mobile-only: subtitle shown below the header-row -->
+    {#if subtitle}
+      <p class="project-subtitle subtitle-below">{subtitle}</p>
     {/if}
 
     {#if description}
@@ -135,9 +152,11 @@
     margin-bottom: 2rem;
     color: var(--text-secondary, #888);
     font: inherit;
-    font-size: 0.88rem;
+    font-size: 1.15rem;
     cursor: pointer;
-    transition: color 0.2s ease, gap 0.15s ease;
+    transition:
+      color 0.2s ease,
+      gap 0.15s ease;
   }
 
   .back-btn:hover {
@@ -169,7 +188,7 @@
   }
 
   .project-icon {
-    font-size: 4rem;
+    font-size: 6rem;
     line-height: 1;
     flex-shrink: 0;
     user-select: none;
@@ -178,7 +197,7 @@
   }
 
   .project-icon-img {
-    width: 12rem;
+    max-width: 12rem;
     height: 12rem;
     object-fit: contain;
     display: block;
@@ -188,10 +207,18 @@
   }
 
   .project-icon-component {
-    width: 12rem;
+    max-width: 12rem;
     height: 12rem;
     pointer-events: none;
     user-select: none;
+  }
+
+  @media (max-width: 480px) {
+    .project-icon-img,
+    .project-icon-component {
+      max-width: 6rem;
+      height: 6rem;
+    }
   }
 
   .header-text {
@@ -218,13 +245,12 @@
   }
 
   .project-url {
-    display: inline-block;
-    font-size: 0.82rem;
+    display: inline;
+    font-size: 1.25rem;
     color: var(--accent-primary, #667eea);
     text-decoration: none;
-    margin-bottom: 0.4rem;
     opacity: 0.8;
-    transition: opacity 0.2s;
+    transition: opacity none;
   }
 
   .project-url:hover {
@@ -233,10 +259,43 @@
   }
 
   .project-date {
-    display: block;
+    display: inline;
+    font-size: 1.25rem;
+    color: var(--text-secondary, #888);
+  }
+
+  .meta-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    margin-bottom: 0.4rem;
+  }
+
+  .meta-sep {
     font-size: 0.85rem;
     color: var(--text-secondary, #888);
-    margin-bottom: 1rem;
+  }
+
+  /* Desktop: subtitle inside row; below-subtitle hidden */
+  .subtitle-below {
+    display: none;
+  }
+
+  /* Mobile: hide subtitle in row, show it below */
+  @media (max-width: 640px) {
+    .subtitle-in-row {
+      display: none;
+    }
+
+    .subtitle-below {
+      display: block;
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--text-secondary, #888);
+      margin: 0.5rem 0 0;
+    }
   }
 
   .project-description {
@@ -249,7 +308,7 @@
   .header-divider {
     border: none;
     border-top: 1px solid var(--card-border, rgba(128, 128, 128, 0.2));
-    margin: 0;
+    margin-top: 1.25rem;
   }
 
   /* ── Body — standardise heading & paragraph formatting ── */
@@ -323,6 +382,10 @@
 
     .header-row {
       gap: 1rem;
+    }
+
+    .project-url, .project-date {
+      font-size: 0.9rem;
     }
   }
 </style>

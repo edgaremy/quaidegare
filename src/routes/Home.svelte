@@ -356,16 +356,16 @@
     z-index: 10;
     max-width: 960px;
     margin: 0 auto;
-    padding: 3rem 2rem 5rem;
+    padding: 5rem 2rem 5rem;
   }
 
   .projects-heading {
     font-family: "Young Serif", serif;
-    font-size: 2.8rem;
+    font-size: 3.2rem;
     font-weight: 600;
     letter-spacing: -0.04em;
     color: var(--text-primary);
-    margin-bottom: 2.5rem;
+    margin-bottom: 1rem;
     text-align: left;
   }
 
@@ -374,8 +374,8 @@
   }
 
   .year-label {
-    font-size: 1.7rem;
-    font-weight: 600;
+    font-size: 1.75rem;
+    font-weight: 300;
     letter-spacing: -0.02em;
     text-transform: uppercase;
     color: var(--text-secondary, #888);
@@ -388,11 +388,27 @@
     flex-wrap: wrap;
     align-items: flex-start;
     gap: 1rem;
+    margin-left: -1.6rem;
   }
 
   @media (max-width: 480px) {
+    .projects-section {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .projects-heading {
+      padding-left: 1.2rem;
+    }
+
+    .year-label {
+      padding-left: 1.2rem;
+    }
+
     .projects-grid {
       flex-direction: column;
+      gap: 0;
+      margin-left: 0;
     }
     /* On mobile each tile spans the full column */
     .projects-grid > :global(*) {

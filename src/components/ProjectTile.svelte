@@ -85,10 +85,12 @@
       {/if}
     </div>
   {/if}
-  <h3 class="tile-title">{title}</h3>
-  {#if subtitle}
-    <p class="tile-subtitle">{subtitle}</p>
-  {/if}
+  <div class="tile-text">
+    <h3 class="tile-title">{title}</h3>
+    {#if subtitle}
+      <p class="tile-subtitle">{subtitle}</p>
+    {/if}
+  </div>
 </button>
 
 <style>
@@ -111,13 +113,36 @@
     transition:
       background 0.4s ease,
       border-color 0.2s ease,
-      transform 0.15s ease,
       box-shadow 0.2s ease,
+      transform 0.15s ease,
       color 0.4s ease;
     width: fit-content;
     max-width: 17.5rem;
     font: inherit;
     color: inherit;
+  }
+
+  @media (max-width: 480px) {
+    .project-tile {
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .tile-icon {
+      flex-shrink: 0;
+      font-size: 1rem;
+      margin-bottom: 0;
+    }
+
+    .tile-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
   }
 
   /* ── Holographic shine layer (iridescent sweep) ── */
@@ -238,9 +263,9 @@
       var(--tile-hover-text, var(--accent-primary, #667eea)),
       transparent 30%
     );
-    border-bottom-width: 6px;
+    box-shadow: inset 0 -4px 0 0 color-mix(in srgb, var(--tile-hover-text, var(--accent-primary, #667eea)), transparent
+          30%);
     transform: translateY(-4px);
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
   }
 
   .project-tile:active {
@@ -292,6 +317,17 @@
     height: 14rem;
     pointer-events: none;
     user-select: none;
+  }
+
+  @media (max-width: 480px) {
+    .tile-icon {
+      font-size: 3.5rem;
+    }
+    .tile-icon-img,
+    .tile-icon-component {
+      width: 5.4rem;
+      height: 5.4rem;
+    }
   }
 
   .tile-title {

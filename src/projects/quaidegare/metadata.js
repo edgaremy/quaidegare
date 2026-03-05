@@ -12,6 +12,6 @@ export const metadata = {
   displayUrl: "quaidegare.fr",
   hoverBgLight: "#fff4e6",
   hoverBgDark: "#2b1700",
-  hoverTextLight: "#7f5300",
+  hoverTextLight: "#6e4700",
   hoverTextDark: "#ffd183",
 };
