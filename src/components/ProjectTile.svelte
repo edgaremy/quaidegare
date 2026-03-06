@@ -155,16 +155,16 @@
       135deg,
       transparent 0%,
       transparent 20%,
-      oklch(0.62 0.24 200 / 0.7) 34%,
+      oklch(0.62 0.24 200 / 0.7) 40%,
       oklch(0.58 0.28 280 / 0.8) 44%,
-      oklch(0.65 0.22 320 / 0.75) 54%,
-      oklch(0.63 0.2 60 / 0.65) 67%,
+      oklch(0.65 0.22 320 / 0.8) 54%,
+      oklch(0.63 0.2 60 / 0.8) 60%,
       transparent 80%,
       transparent 100%
     );
     mix-blend-mode: overlay;
     /* Start off-screen to the left */
-    transform: translateX(-140%);
+    transform: translateX(-120%) translateY(-60%) scaleX(1) scaleY(2);
     opacity: 0;
     transition:
       transform 0s ease,
@@ -179,10 +179,10 @@
       135deg,
       transparent 0%,
       transparent 10%,
-      oklch(89.399% 0.13197 200.492 / 0.7) 38%,
+      oklch(89.399% 0.13197 200.492 / 0.6) 40%,
       oklch(69.052% 0.16623 280.369) 44%,
       oklch(83.077% 0.16472 326.904) 54%,
-      oklch(83.25% 0.12194 64.764 / 0.7) 64%,
+      oklch(83.25% 0.12194 64.764 / 0.9) 60%,
       transparent 90%,
       transparent 100%
     );
@@ -191,17 +191,19 @@
   /* On hover / active (mobile tap): sweep the shine across, then fade out */
   .project-tile:hover::before,
   .project-tile:active::before {
-    transform: translateX(140%);
-    opacity: 1;
+    transform: translateX(120%) translateY(60%) scaleX(3.5) scaleY(1);
+    opacity: 0.75;
     transition:
-      transform 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      opacity 0.3s ease;
+      transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      opacity 0.2s ease;
+      /* transform 3.85s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      opacity 0s ease; */
   }
 
   /* Dark theme hover: slightly reduced — screen on dark is already punchy */
   .project-tile.dark:hover::before,
   .project-tile.dark:active::before {
-    opacity: 0.75;
+    opacity: 0.65;
   }
 
   /* ── Holographic ambient layer (conic glow, persistent on hover) ── */
