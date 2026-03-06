@@ -259,8 +259,8 @@
       transparent 0%,
       transparent 20%,
       oklch(89.399% 0.13197 200.492 / 0.6) 40%,
-      oklch(69.052% 0.16623 280.369) 44%,
-      oklch(83.077% 0.16472 326.904) 54%,
+      oklch(63.506% 0.19893 278.489 / 0.886) 46%,
+      oklch(75.763% 0.24992 327.679 / 0.924) 52%,
       oklch(83.25% 0.12194 64.764 / 0.9) 60%,
       transparent 80%,
       transparent 100%
@@ -391,7 +391,7 @@
   .header-text {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: -0.3rem;
   }
 
   .project-title {
@@ -405,11 +405,12 @@
   }
 
   .project-subtitle {
-    font-size: 1.05rem;
+    font-size: 1.25rem;
     font-weight: 400;
     color: var(--hdr-accent, var(--text-secondary, #888));
     opacity: 0.75;
     margin: 0;
+    margin-top: 0.4rem;
   }
 
   .project-url {

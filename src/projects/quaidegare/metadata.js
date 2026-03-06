@@ -3,7 +3,7 @@ import ERIcon from "./ERIcon.svelte";
 
 export const metadata = {
   title: "Quai de Gare",
-  subtitle: "this very website, quaidegare.fr",
+  subtitle: "This very website, quaidegare.fr",
   description: "",
   date: "2026",
   icon: "",
