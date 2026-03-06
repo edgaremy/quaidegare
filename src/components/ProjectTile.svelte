@@ -111,9 +111,9 @@
     position: relative;
     overflow: hidden;
     transition:
-      background 0.4s ease,
-      border-color 0.2s ease,
-      box-shadow 0.2s ease,
+      background 0.55s ease,
+      border-color 0.6s ease,
+      box-shadow 0.3s ease,
       transform 0.15s ease,
       color 0.4s ease;
     width: fit-content;
@@ -156,8 +156,8 @@
       transparent 0%,
       transparent 20%,
       oklch(0.62 0.24 200 / 0.7) 40%,
-      oklch(0.58 0.28 280 / 0.8) 44%,
-      oklch(0.65 0.22 320 / 0.8) 54%,
+      oklch(0.58 0.28 280 / 0.9) 44%,
+      oklch(0.65 0.22 320 / 0.9) 54%,
       oklch(0.63 0.2 60 / 0.8) 60%,
       transparent 80%,
       transparent 100%
@@ -178,12 +178,12 @@
     background: linear-gradient(
       135deg,
       transparent 0%,
-      transparent 10%,
+      transparent 20%,
       oklch(89.399% 0.13197 200.492 / 0.6) 40%,
       oklch(69.052% 0.16623 280.369) 44%,
       oklch(83.077% 0.16472 326.904) 54%,
       oklch(83.25% 0.12194 64.764 / 0.9) 60%,
-      transparent 90%,
+      transparent 80%,
       transparent 100%
     );
   }
@@ -312,6 +312,7 @@
   .project-tile:hover .tile-icon-img,
   .project-tile:active .tile-icon-img {
     color: var(--tile-hover-text, var(--text-primary));
+    transition: color 0.5s ease;
   }
 
   .tile-icon-component {
